@@ -1,0 +1,44 @@
+{
+	"users": [
+		{
+			"id": 1,
+			"login": "ivan000",
+			"firstName": "Иван",
+			"lastName": "Иванов",
+			"email": "ivanov@mail.ru",
+			"role": "admin"
+		},
+		{
+			"id": 2,
+			"login": "petr777",
+			"firstName": "Петр",
+			"lastName": "Петров",
+			"email": "petrov@mail.ru",
+			"role": "user"
+		},
+		{
+			"id": 3,
+			"login": "SiDoR",
+			"firstName": "Сидор",
+			"lastName": "Сидоров",
+			"email": "sidorov@mail.us",
+			"role": "user"
+		},
+		{
+			"id": 4,
+			"login": "beautygirl",
+			"firstName": "Анна",
+			"lastName": "Семенова",
+			"email": "chiky@gmail.com",
+			"role": "user"
+		},
+		{
+			"id": 5,
+			"login": "zaur",
+			"firstName": "Заур",
+			"lastName": "Трегулов",
+			"email": "bestuser@mail.world",
+			"role": "user"
+		}
+	]
+}
