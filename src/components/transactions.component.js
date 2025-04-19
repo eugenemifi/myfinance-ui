@@ -20,8 +20,10 @@ function ListTransactions() {
                     <tr>
 
                         <td> Transaction Id</td>
-                        <td> Transaction comment</td>
                         <td> Transaction amount</td>
+                        <td> Transaction date</td>
+                        <td> Transaction category</td>
+                        <td> Transaction description</td>
                     </tr>
 
                     </thead>
@@ -30,8 +32,10 @@ function ListTransactions() {
                     {transactions.map(transaction =>
                         <tr key = {transaction.id}>
                             <td> {transaction.id}</td>
-                            <td> {transaction.comment}</td>
                             <td> {transaction.amount}</td>
+                            <td> {transaction.date}</td>
+                            <td> {transaction.category}</td>
+                            <td> {transaction.description}</td>
                         </tr>
                     )}
                     </tbody>

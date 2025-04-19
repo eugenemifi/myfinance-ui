@@ -1,29 +1,39 @@
 {
-	"transactions": [
-		{
-			"id": 1,
-			"comment": "Оплата мобилки",
-			"amount": 1000
-		},
-		{
-			"id": 2,
-            "comment": "Зарплата",
-            "amount": 99888
-		},
-		{
-			"id": 3,
-            "comment": "Коммунальные услуги",
-            "amount": 7800
-		},
-		{
-			"id": 4,
-            "comment": "Аванс",
-            "amount": 35000
-		},
-		{
-			"id": 5,
-            "comment": "Покупка: Азбука вкуса",
-            "amount": 13500
-		}
-	]
+    "transactions": [
+        {
+            "id": "165978cb-2585-4aee-8983-d5c0fe8921c5",
+            "amount": 725,
+            "date": "2025-04-18 12:35",
+            "category": "Расходы",
+            "description": "Оплата мобильной связи"
+        },
+        {
+            "id": "f4b3d6af-c1ab-41dc-b4ff-f0bc3a627dcd",
+            "amount": 99888,
+            "date": "2025-04-15 10:00",
+            "category": "Доход",
+            "description": "Зарплата"
+        },
+        {
+            "id": "2b428282-ea57-4b83-aeb1-06a4243e51dd",
+            "amount": 7800,
+            "date": "2025-04-20 15:45",
+            "category": "Расходы",
+            "description": "Коммунальные услуги"
+        },
+        {
+            "id": "412850db-6032-46c4-be54-cefa213a4aec",
+            "amount": 35000,
+            "date": "2025-04-10 11:15",
+            "category": "Доход",
+            "description": "Аванс"
+        },
+        {
+            "id": "e7466656-25c2-46a7-8051-4589288665ca",
+            "amount": 13500,
+            "date": "2025-04-22 18:30",
+            "category": "Расходы",
+            "description": "Покупка: Азбука вкуса"
+        }
+    ]
 }

@@ -23,6 +23,8 @@ function ListUsers() {
                         <td> User Last Name</td>
                         <td> User Email Id</td>
                         <td> User Role</td>
+                        <td> User Create At</td>
+                        <td> User Update At</td>
                     </tr>
 
                     </thead>
@@ -35,7 +37,9 @@ function ListUsers() {
                                     <td> {user.firstName}</td>
                                     <td> {user.lastName}</td>
                                     <td> {user.email}</td>
-                                    <td> {user.role}</td>
+                                    <td> {user.userRole}</td>
+                                    <td> {user.createdAt}</td>
+                                    <td> {user.updatedAt}</td>
                                 </tr>
                     )}
                     </tbody>
