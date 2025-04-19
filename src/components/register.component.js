@@ -1,88 +1,77 @@
-import React, {useState} from "react";
-import { Formik, Form as FormikForm, Field } from "formik";
-import AuthService from "../services/auth.service";
-import {useNavigate} from "react-router";
+import React from "react";
+import {ErrorMessage, Field, Form as FormikForm, Formik} from "formik";
+import * as Yup from "yup"; // Подключили Yup
+import {useNavigate} from "react-router-dom";
+
+const validationSchema = Yup.object().shape({
+    login: Yup.string()
+        .required("Логин обязателен")
+        .min(3, "Минимальная длина логина — 3 символа")
+        .max(100, "Максимальная длина логина — 100 символов"),
+
+    email: Yup.string()
+        .email("Некорректный адрес электронной почты")
+        .required("Email обязателен")
+        .max(100, "Максимальная длина адреса — 100 символов"),
+
+    password: Yup.string()
+        .required("Пароль обязателен")
+        .min(8, "Минимальная длина пароля — 8 символов")
+        .max(100, "Максимальная длина пароля — 100 символов"),
+});
 
 function Register() {
-
-    const [loginForm, setLoginForm] = useState('')
-    const [passwordForm, setPasswordForm] = useState('')
-    const [emailForm, setEmailForm] = useState('')
     const navigate = useNavigate();
-
-    function handleLoginChange(e) {
-        setLoginForm(e.target.value);
-    }
-
-    function handlePasswordChange(e) {
-        setPasswordForm(e.target.value);
-    }
-
-    function handleEmailChange(e) {
-        setEmailForm(e.target.value);
-    }
 
     return (
         <Formik
-            initialValues={{
-                login: "",
-                email: "",
-                password: "",
-            }}
+            initialValues={{login: "", password: "", email: ""}}
+            validationSchema={validationSchema}
             onSubmit={(values) => {
-                console.log("Поданные данные:", loginForm, passwordForm, emailForm);
-                //AuthService.register(values.username, values.email, values.password);
-                navigate("/home");
+                console.log("Поданные данные:", values.login, values.password, values.email);
+                navigate("/");
             }}
         >
-            <FormikForm className="container mt-5">
-                <div className="mb-3">
-                    <label htmlFor="login" className="form-label">
-                        Логин
-                    </label>
-                    <Field
-                        type="login"
-                        className="form-control"
-                        id="login"
-                        name="login"
-                        placeholder="Введите ваш логин"
-                        value = {loginForm}
-                        onChange = {handleLoginChange}
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="email" className="form-label">
-                        Электронная почта
-                    </label>
-                    <Field
-                        type="email"
-                        className="form-control"
-                        id="email"
-                        name="email"
-                        placeholder="Введите вашу электронную почту"
-                        value = {emailForm}
-                        onChange = {handleEmailChange}
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="password" className="form-label">
-                        Пароль
-                    </label>
-                    <Field
-                        type="password"
-                        className="form-control"
-                        id="password"
-                        name="password"
-                        placeholder="Введите пароль"
-                        value = {passwordForm}
-                        onChange = {handlePasswordChange}
-                    />
-                </div>
-                <button type="submit" className="btn btn-primary">
-                    Регистрация
-                </button>
-            </FormikForm>
+            {({errors, touched}) => (
+                <FormikForm className="container mt-5">
+                    <div className="mb-3">
+                        <label htmlFor="login" className="form-label">Логин</label>
+                        <Field
+                            type="text"
+                            className={`form-control ${errors.login && touched.login ? "is-invalid" : ""}`}
+                            id="login"
+                            name="login"
+                            placeholder="Введите ваш логин"
+                        />
+                        <ErrorMessage component="div" name="login" className="invalid-feedback"/>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="email" className="form-label">Электронная почта</label>
+                        <Field
+                            type="email"
+                            className={`form-control ${errors.email && touched.email ? "is-invalid" : ""}`}
+                            id="email"
+                            name="email"
+                            placeholder="Введите вашу электронную почту"
+                        />
+                        <ErrorMessage component="div" name="email" className="invalid-feedback"/>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="password" className="form-label">Пароль</label>
+                        <Field
+                            type="password"
+                            className={`form-control ${errors.password && touched.password ? "is-invalid" : ""}`}
+                            id="password"
+                            name="password"
+                            placeholder="Введите пароль"
+                        />
+                        <ErrorMessage component="div" name="password" className="invalid-feedback"/>
+                    </div>
+                    <button type="submit" className="btn btn-primary">Регистрация</button>
+                </FormikForm>
+            )}
         </Formik>
     );
 }
+
 export default Register;
