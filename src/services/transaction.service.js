@@ -6,7 +6,7 @@ const API_URL = "http://localhost:8089/api/v1/transactions";
 class TransactionService {
 
     getTransactions() {
-        return axios.get(API_URL, {headers: authHeader()});
+        return axios.post(API_URL, {}, {headers: authHeader()});
     }
 
     createTransaction(transaction) {
