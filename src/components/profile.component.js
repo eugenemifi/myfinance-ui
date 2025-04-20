@@ -1,13 +1,13 @@
+import AuthService from "../services/auth.service";
+
 function Profile() {
 
-    const user = JSON.stringify(localStorage.getItem("user"));
+    const user = AuthService.getCurrentUser();
 
     return (
         <>
             <h2> Profile </h2>
-            <div> username : {user.username}</div>
-            <div> password : {user.password}</div>
-            <div> email : {user.email}</div>
+            <p><strong>Token</strong> : {user && user.token} </p>
         </>
     )
 }

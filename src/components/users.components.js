@@ -1,5 +1,7 @@
 import {useEffect, useState} from "react";
 import DataFromMock from "../utils/util"
+import {Link} from "react-router";
+import UserService from "../services/user.service";
 function ListUsers() {
 
     const [users, setUsers] = useState(DataFromMock.getUsers);
@@ -40,6 +42,8 @@ function ListUsers() {
                                     <td> {user.userRole}</td>
                                     <td> {user.createdAt}</td>
                                     <td> {user.updatedAt}</td>
+                                    <td>{<Link to={`${user.id}`} className="btn btn-info">Редактировать</Link>}</td>
+                                    <td>{<Link to={`/users`}>Удалить</Link>}</td>
                                 </tr>
                     )}
                     </tbody>
