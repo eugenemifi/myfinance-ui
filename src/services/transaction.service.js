@@ -10,10 +10,16 @@ class TransactionService {
     }
 
     async searchTransaction(minAmount, maxAmount, startDate, endDate, category) {
+        startDate = new Date(startDate).getTime();
+        endDate = new Date(endDate);
+        endDate.setHours(23, 59, 59, 999);
+        endDate = endDate.getTime();
+        // startDate += "T00:00:00.000";
+        // endDate += "T23:59:59.999";
         return axios({
             method: 'get',
-            url: API_URL,
-            data: {
+            url: API_URL + "search",
+            params: {
                 minAmount: minAmount,
                 maxAmount: maxAmount,
                 startDate: startDate,
@@ -41,4 +47,5 @@ class TransactionService {
     }
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default new TransactionService()

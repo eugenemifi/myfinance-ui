@@ -40,6 +40,7 @@ function SearchTransactions() {
 
     async function doSearch(minAmount, maxAmount, startDate, endDate, category) {
         const response = await TransactionService.searchTransaction(minAmount, maxAmount, startDate, endDate, category);
+        console.log(response);
         setTransactions(response.data);
         setSearchParameters(true);
     }
@@ -48,7 +49,7 @@ function SearchTransactions() {
         <>
             {!isSearchParameters &&
                 <Formik
-                    initialValues={{minAmount: 0, maxAmount: 10000000, startDate: "", endDate: "", category: ""}}
+                    initialValues={{minAmount: 0, maxAmount: 10000000, startDate: "", endDate: "", category: "Зарплата"}}
                     validationSchema={validationSchema}
                     onSubmit={(values) => {
                         doSearch(values.minAmount, values.maxAmount, values.startDate, values.endDate, values.category);
@@ -119,14 +120,6 @@ function SearchTransactions() {
                                             Продажа
                                         </label>
                                     </div>
-                                    <div className="form-check">
-                                        <label className="form-check-label">
-                                            <Field type="radio" className="form-check-input" name="category"
-                                                   value="Продажа"/>
-                                            Продажа
-                                        </label>
-                                    </div>
-
                                     <div className="form-check">
                                         <label className="form-check-label">
                                             <Field type="radio" className="form-check-input" name="category"
