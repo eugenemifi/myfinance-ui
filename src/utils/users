@@ -1,0 +1,54 @@
+{
+    "users": [
+        {
+            "id": "f81d4fae-7dec-11d0-a765-00a0c91e6bf6",
+            "login": "ivan000",
+            "firstName": "Иван",
+            "lastName": "Иванов",
+            "email": "ivanov@mail.ru",
+            "userRole": "admin",
+            "createdAt": "2025-04-15 18:00",
+            "updatedAt": "2025-04-16 02:30"
+        },
+        {
+            "id": "b4e8c6eb-f6ff-4aed-b1c6-cdb014b3a64f",
+            "login": "petr777",
+            "firstName": "Петр",
+            "lastName": "Петров",
+            "email": "petrov@mail.ru",
+            "userRole": "user",
+            "createdAt": "2025-04-15 18:00",
+            "updatedAt": "2025-04-16 02:30"
+        },
+        {
+            "id": "45558fbd-d415-4836-be75-e0a348128a78",
+            "login": "SiDoR",
+            "firstName": "Сидор",
+            "lastName": "Сидоров",
+            "email": "sidorov@mail.us",
+            "userRole": "user",
+            "createdAt": "2025-04-15 18:00",
+            "updatedAt": "2025-04-16 02:30"
+        },
+        {
+            "id": "1994b4fd-1c62-4537-abdf-ce2445b64011",
+            "login": "beautygirl",
+            "firstName": "Анна",
+            "lastName": "Семенова",
+            "email": "chiky@gmail.com",
+            "userRole": "user",
+            "createdAt": "2025-04-15 18:00",
+            "updatedAt": "2025-04-16 02:30"
+        },
+        {
+            "id": "341901aa-7991-4444-80f2-112032eae296",
+            "login": "zaur",
+            "firstName": "Заур",
+            "lastName": "Трегулов",
+            "email": "bestuser@mail.world",
+            "userRole": "user",
+            "createdAt": "2025-04-15 18:00",
+            "updatedAt": "2025-04-16 02:30"
+        }
+    ]
+}
