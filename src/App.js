@@ -2,13 +2,13 @@ import {Link, Route, Routes} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Register from "./components/register.component";
 import StartPage from "./components/startpage.component";
-import ListUsers from "./components/users.components";
-import ListTransactions from "./components/transactions.component";
-import User from "./components/user.component";
+import ShowAllTransactions from "./components/showAllTransactions.component";
 import Profile from "./components/profile.component";
 import AuthService from "./services/auth.service";
 import {useState} from "react";
 import Login from "./components/login.component";
+import SearchTransactions from "./components/serchTransactional.component";
+import Transaction from "./components/transaction.component";
 
 function App() {
 
@@ -27,10 +27,10 @@ function App() {
                     <>
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item">
-                                <Link to={"/users"} className="nav-link">Users</Link>
+                                <Link to={"/search-trans"} className="nav-link">Search Transaction</Link>
                             </li>
                             <li className="nav-item">
-                                <Link to={"/transactions"} className="nav-link">Transactions</Link>
+                                <Link to={"/transactions"} className="nav-link">All Transactions</Link>
                             </li>
                         </ul>
                         <ul className="navbar-nav ml-auto">
@@ -55,9 +55,9 @@ function App() {
                 <Routes>
                     <Route path="/*" element={<StartPage/>}/>
                     <Route path="/profile" element={<Profile/>}/>
-                    <Route path="/users" element={<ListUsers/>}/>
-                    <Route path="/users/:id" element={<User/>}/>
-                    <Route path="/transactions" element={<ListTransactions/>}/>
+                    <Route path="/search-trans" element={<SearchTransactions/>}/>
+                    <Route path="/transactions/:id" element={<Transaction/>}/>
+                    <Route path="/transactions" element={<ShowAllTransactions/>}/>
                     <Route path="/login" element={<Login action={setCurrentUser}/>}/>
                     <Route path="/register" element={<Register/>}/>
                 </Routes>
