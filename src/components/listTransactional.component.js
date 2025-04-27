@@ -1,10 +1,16 @@
-import {Link} from "react-router";
+import {Link, useNavigate} from "react-router";
 import AuthService from "../services/auth.service";
 import {useState} from "react";
 
 function ListTransactions({transactions}) {
 
     const [currentUser] = useState(AuthService.getCurrentUser);
+
+    const navigate = useNavigate();
+
+    const goto = () => {
+        navigate("/create-trans");
+    }
 
     return (
         <>
@@ -13,7 +19,7 @@ function ListTransactions({transactions}) {
                 <div>
                     <h2 className="text-center">Список транзакций</h2>
                     <div className="row">
-                        <button disabled="true" className="btn btn-primary"> Добавить транзакцию</button>
+                        <button onClick={goto} className="btn btn-primary"> Добавить транзакцию</button>
                     </div>
                     <br></br>
                     <div className="row">
@@ -31,7 +37,7 @@ function ListTransactions({transactions}) {
                             {transactions.map(transaction =>
                                 <tr key={transaction.id}>
                                     <td> {transaction.amount}</td>
-                                    <td> {transaction.transactionDateTime}</td>
+                                    <td> {new Date(transaction.transactionDateTime).toLocaleDateString()}</td>
                                     <td> {transaction.category.categoryName}</td>
                                     <td> {transaction.comment}</td>
                                     <td>{<Link to={`${transaction.id}`}

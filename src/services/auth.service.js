@@ -30,6 +30,10 @@ class AuthService {
     getCurrentUser() {
         return JSON.parse(localStorage.getItem("user"));
     }
+
+    getCurrentUserId() {
+        return this.getCurrentUser().uuid;
+    }
 }
 
 export default new AuthService()

@@ -13,6 +13,7 @@ import ListCategories from "./components/listCategories.component";
 import ListBanks from "./components/listBanks.component";
 import ListTransactionStatus from "./components/listTransactionStatus.component";
 import ListTransactionType from "./components/listTransactionType.component";
+import CreateTransactions from "./components/createTransactional.component";
 
 function App() {
 
@@ -30,6 +31,9 @@ function App() {
                 {currentUser ? (
                     <>
                         <ul className="navbar-nav mr-auto">
+                            <li className="nav-item">
+                                <Link to={"/create-trans"} className="nav-link">Create Transaction</Link>
+                            </li>
                             <li className="nav-item">
                                 <Link to={"/search-trans"} className="nav-link">Search Transaction</Link>
                             </li>
@@ -71,13 +75,14 @@ function App() {
                 <Routes>
                     <Route path="/*" element={<StartPage/>}/>
                     <Route path="/profile" element={<Profile/>}/>
+                    <Route path="/create-trans" element={<CreateTransactions/>}/>
                     <Route path="/search-trans" element={<SearchTransactions/>}/>
                     <Route path="/transactions/:id" element={<Transaction/>}/>
                     <Route path="/transactions" element={<ShowAllTransactions/>}/>
-                    <Route path="/categories" element={<ListCategories />}/>
-                    <Route path="/banks" element={<ListBanks />}/>
-                    <Route path="/statuses" element={<ListTransactionStatus />}/>
-                    <Route path="/types" element={<ListTransactionType />}/>
+                    <Route path="/categories" element={<ListCategories/>}/>
+                    <Route path="/banks" element={<ListBanks/>}/>
+                    <Route path="/statuses" element={<ListTransactionStatus/>}/>
+                    <Route path="/types" element={<ListTransactionType/>}/>
                     <Route path="/login" element={<Login action={setCurrentUser}/>}/>
                     <Route path="/register" element={<Register/>}/>
                 </Routes>
