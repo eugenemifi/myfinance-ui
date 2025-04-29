@@ -77,7 +77,7 @@ function App() {
                     <Route path="/profile" element={<Profile/>}/>
                     <Route path="/create-trans" element={<CreateTransactions/>}/>
                     <Route path="/search-trans" element={<SearchTransactions/>}/>
-                    <Route path="/transactions/:id" element={<Transaction/>}/>
+                    <Route path="/transactions/:id/:action" element={<Transaction/>}/>
                     <Route path="/transactions" element={<ShowAllTransactions/>}/>
                     <Route path="/categories" element={<ListCategories/>}/>
                     <Route path="/banks" element={<ListBanks/>}/>

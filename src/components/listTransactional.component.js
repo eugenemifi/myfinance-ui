@@ -1,6 +1,7 @@
 import {Link, useNavigate} from "react-router";
 import AuthService from "../services/auth.service";
 import {useState} from "react";
+import TransactionService from "../services/transaction.service";
 
 function ListTransactions({transactions}) {
 
@@ -10,6 +11,10 @@ function ListTransactions({transactions}) {
 
     const goto = () => {
         navigate("/create-trans");
+    }
+
+    const deleteTransaction = (uuid) => {
+        TransactionService.deleteTransaction(uuid);
     }
 
     return (
@@ -40,9 +45,10 @@ function ListTransactions({transactions}) {
                                     <td> {new Date(transaction.transactionDateTime).toLocaleDateString()}</td>
                                     <td> {transaction.category.categoryName}</td>
                                     <td> {transaction.comment}</td>
-                                    <td>{<Link to={`${transaction.id}`}
+                                    <td>{<Link to={`${transaction.id}/edit`}
                                                className="btn btn-info">Редактировать</Link>}
-                                        {<Link to={`/users`} className="btn btn btn-danger">Удалить</Link>}</td>
+                                        {<Link to={`${transaction.id}/delete`} className="btn btn btn-danger"
+                                        onClick={() => deleteTransaction(transaction.id)}>Удалить</Link>}</td>
                                 </tr>
                             )}
                             </tbody>

@@ -34,12 +34,12 @@ class TransactionService {
         return axios.post(API_URL, transaction, {headers: authHeader()})
     }
 
-    getTransactionById(transactionId) {
+    async getTransactionById(transactionId) {
         return axios.get(API_URL + transactionId, {headers: authHeader()})
     }
 
     updateTransaction(transaction) {
-        return axios.put(API_URL + transaction.id, transaction, {headers: authHeader()})
+        return axios.put(API_URL, transaction, {headers: authHeader()})
     }
 
     deleteTransaction(transactionId) {

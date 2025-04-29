@@ -1,13 +1,22 @@
 import {useParams} from "react-router";
-
+import CreateTransactions from "./createTransactional.component";
 function Transaction() {
 
-    const { id } = useParams();
+    const { id, action} = useParams();
 
     return (
         <>
-            <div> Заготовочка Просмотр инфы о транзакции</div>
+            <div> Информация о транзакции</div>
             <div> Transaction with id = {id} </div>
+            {action === "delete" && (
+                <div> Транзакция удалена </div>
+            )}
+            {action === "edit" && (
+                <>
+                    <div> Редактирование транзакции </div>
+                    <CreateTransactions id={id}/>
+                </>
+            )}
         </>
     );
 }

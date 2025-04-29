@@ -60,7 +60,7 @@ const validationSchema = Yup.object().shape({
         .max(500, "Максимальная длина комментария - 500 символов"),
 });
 
-function CreateTransactions() {
+function CreateTransactions({id}) {
 
     const [isCreated, setIsCreated] = useState(false)
     const [transact, setTransact] = useState([])
@@ -69,8 +69,19 @@ function CreateTransactions() {
     const [transactionsType, setTransactionType] = useState([]);
     const [transactionsStatus, setTransactionStatus] = useState([]);
     const [banks, setBanks] = useState([]);
+    const [existsTransaction, setExistsTransaction] = useState([])
+    const [datatime, setDatatime] = useState(new Date().toISOString().slice(0, 11) + new Date().toLocaleString().slice(-8, -3))
 
     useEffect(() => {
+        if (id) {
+            TransactionService.getTransactionById(id).then(
+                response => {
+                    setExistsTransaction(response.data)
+                    setDatatime(new Date(response.data.createdAt).toISOString().slice(0, -8));
+                    console.log(response.data)
+                }
+            )
+        }
         CategoryService.getCategories()
             .then((response) => {
                 const data = response.data;
@@ -103,7 +114,7 @@ function CreateTransactions() {
             .catch((error) => {
                 console.log(error);
             })
-    }, [])
+    }, [id])
 
     async function doCreate(amount, categoryId, transactionTypeId, transactionStatusId, senderId, recipientId,
                             recipientInn, recipientBankAccount, phoneNumber, date, comment) {
@@ -137,19 +148,66 @@ function CreateTransactions() {
         }).catch(error => console.log(error))
     }
 
+    async function doUpdate(amount, categoryId, transactionTypeId, transactionStatusId, senderId, recipientId,
+                            recipientInn, recipientBankAccount, phoneNumber, date, comment) {
+        const time = Date.parse(date);
+        const user = {userId: AuthService.getCurrentUserId()};
+        const transactionType = {id: transactionTypeId};
+        const transactionStatus = {id: transactionStatusId};
+        const category = {id: categoryId};
+        const senderBank = {bankId: senderId};
+        const recipientBank = {bankId: recipientId};
+        const data = {
+            id: existsTransaction.id,
+            user: user,
+            transactionType: transactionType,
+            transactionStatus: transactionStatus,
+            category: category,
+            transactionDateTime: time,
+            comment: comment,
+            amount: amount,
+            senderBank: senderBank,
+            recipientBank: recipientBank,
+            recipientInn: recipientInn,
+            recipientBankAccount: recipientBankAccount,
+            recipientPhone: phoneNumber,
+            createdAt: time,
+            updatedAt: Date.parse(new Date().toISOString().slice(0, 11) + new Date().toLocaleString().slice(-8, -3))
+        }
+        TransactionService.updateTransaction(data).then(response => {
+            setIsCreated(true);
+            setTransact(response.data)
+        }).catch(error => console.log(error))
+    }
+
     return (
         <>
             {!isCreated &&
                 <Formik
+                    enableReinitialize={true}
                     initialValues={{
-                        amount: 0, category: "", transType: "", transStatus: "", senderId: "", recipientId: "",
-                        recipientInn: 12345678987, recipientBankAccount: "", phoneNumber: "", date: "", comment: ""
+                        amount: existsTransaction?.amount || 0,
+                        category: existsTransaction?.category?.id || "",
+                        transType: existsTransaction?.transactionType?.id || "",
+                        transStatus: existsTransaction?.transactionStatus?.id || "",
+                        senderId: existsTransaction?.senderBank?.bankId || "",
+                        recipientId: existsTransaction?.recipientBank?.bankId || "",
+                        recipientInn: existsTransaction?.recipientInn || 12345678987,
+                        recipientBankAccount: existsTransaction?.recipientBankAccount || "",
+                        phoneNumber: existsTransaction?.recipientPhone || "",
+                        date: datatime || "",
+                        comment: existsTransaction?.comment || ""
                     }}
                     validationSchema={validationSchema}
                     onSubmit={(values) => {
-                        doCreate(values.amount, values.category, values.transType, values.transStatus, values.senderId,
-                            values.recipientId, values.recipientInn, values.recipientBankAccount, values.phoneNumber,
-                            values.date, values.comment);
+                        existsTransaction ?
+                            doUpdate(values.amount, values.category, values.transType, values.transStatus, values.senderId,
+                                values.recipientId, values.recipientInn, values.recipientBankAccount, values.phoneNumber,
+                                values.date, values.comment)
+                            :
+                            doCreate(values.amount, values.category, values.transType, values.transStatus, values.senderId,
+                                values.recipientId, values.recipientInn, values.recipientBankAccount, values.phoneNumber,
+                                values.date, values.comment)
                     }}
                 >
                     {({errors, touched}) => (
@@ -320,7 +378,11 @@ function CreateTransactions() {
                                 />
                                 <ErrorMessage component="div" name="comment" className="invalid-feedback"/>
                             </div>
-                            <button type="submit" className="btn btn-primary">Создать транзакцию</button>
+                            {existsTransaction ?
+                                <button type="submit" className="btn btn-primary">Обновить транзакцию</button>
+                                :
+                                <button type="submit" className="btn btn-primary">Создать транзакцию</button>
+                            }
                         </FormikForm>
                     )}
                 </Formik>
