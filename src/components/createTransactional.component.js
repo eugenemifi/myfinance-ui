@@ -69,15 +69,17 @@ function CreateTransactions({id}) {
     const [transactionsType, setTransactionType] = useState([]);
     const [transactionsStatus, setTransactionStatus] = useState([]);
     const [banks, setBanks] = useState([]);
-    const [existsTransaction, setExistsTransaction] = useState([])
-    const [datatime, setDatatime] = useState(new Date().toISOString().slice(0, 11) + new Date().toLocaleString().slice(-8, -3))
+    const [existsTransaction, setExistsTransaction] = useState(false)
+    const [data, setData] = useState(new Date().toISOString().slice(0, -14))
+    const [idNew, setIdNew] = useState("")
 
     useEffect(() => {
         if (id) {
+            console.log("TransId: ", id)
             TransactionService.getTransactionById(id).then(
                 response => {
                     setExistsTransaction(response.data)
-                    setDatatime(new Date(response.data.createdAt).toISOString().slice(0, -8));
+                    setData(new Date(response.data.createdAt).toISOString().slice(0, -14));
                     console.log(response.data)
                 }
             )
@@ -102,19 +104,21 @@ function CreateTransactions({id}) {
             .then((response) => {
                 const data = response.data;
                 setTransactionStatus(data);
+                setIdNew(response.data.find(e => e.status === "NEW").id)
+                console.log("idNew: ", idNew)
             })
             .catch((error) => {
                 console.log(error);
             })
         BanksService.getBanks()
             .then((response) => {
-                const data = response.data;
+                const data = response.data.content;
                 setBanks(data);
             })
             .catch((error) => {
                 console.log(error);
             })
-    }, [id])
+    }, [id, idNew])
 
     async function doCreate(amount, categoryId, transactionTypeId, transactionStatusId, senderId, recipientId,
                             recipientInn, recipientBankAccount, phoneNumber, date, comment) {
@@ -142,6 +146,7 @@ function CreateTransactions({id}) {
             createdAt: time,
             updatedAt: time
         }
+        console.log("doCreate: ", data)
         TransactionService.createTransaction(data).then(response => {
             setIsCreated(true);
             setTransact(response.data)
@@ -153,7 +158,8 @@ function CreateTransactions({id}) {
         const time = Date.parse(date);
         const user = {userId: AuthService.getCurrentUserId()};
         const transactionType = {id: transactionTypeId};
-        const transactionStatus = {id: transactionStatusId};
+        const transactionStatusText = transactionsStatus.find(t => t.id === transactionStatusId).status
+        const transactionStatus = {id: transactionStatusId, status: transactionStatusText};
         const category = {id: categoryId};
         const senderBank = {bankId: senderId};
         const recipientBank = {bankId: recipientId};
@@ -174,10 +180,11 @@ function CreateTransactions({id}) {
             createdAt: time,
             updatedAt: Date.parse(new Date().toISOString().slice(0, 11) + new Date().toLocaleString().slice(-8, -3))
         }
+        console.log("DoUpdate ", data)
         TransactionService.updateTransaction(data).then(response => {
             setIsCreated(true);
             setTransact(response.data)
-        }).catch(error => console.log(error))
+        }).catch(error => alert(error))
     }
 
     return (
@@ -189,13 +196,13 @@ function CreateTransactions({id}) {
                         amount: existsTransaction?.amount || 0,
                         category: existsTransaction?.category?.id || "",
                         transType: existsTransaction?.transactionType?.id || "",
-                        transStatus: existsTransaction?.transactionStatus?.id || "",
+                        transStatus: existsTransaction?.transactionStatus?.id || idNew,
                         senderId: existsTransaction?.senderBank?.bankId || "",
                         recipientId: existsTransaction?.recipientBank?.bankId || "",
                         recipientInn: existsTransaction?.recipientInn || 12345678987,
                         recipientBankAccount: existsTransaction?.recipientBankAccount || "",
                         phoneNumber: existsTransaction?.recipientPhone || "",
-                        date: datatime || "",
+                        date: data || "",
                         comment: existsTransaction?.comment || ""
                     }}
                     validationSchema={validationSchema}
@@ -263,26 +270,28 @@ function CreateTransactions({id}) {
                                     )}
                                 </div>
                             </div>
-                            <div className="mb-3">
-                                <div id="my-category-group">Статус транзакции</div>
-                                <ErrorMessage component="div" name="transStatus"
-                                              className="btn btn-danger invalid-feedback"/>
-                                <div role="group" aria-labelledby="my-category-group">
-                                    {transactionsStatus.map(transStatus =>
-                                        <div className="form-check" key={transStatus.id}>
-                                            <label className="form-check-label">
-                                                <Field
-                                                    type="radio"
-                                                    className={`form-check-input ${errors.transStatus && touched.transStatus ? "is-invalid" : ""}`}
-                                                    name="transStatus"
-                                                    value={transStatus.id}
-                                                />
-                                                {transStatus.status}
-                                            </label>
-                                        </div>
-                                    )}
+                            {id &&
+                                <div className="mb-3">
+                                    <div id="my-category-group">Статус транзакции</div>
+                                    <ErrorMessage component="div" name="transStatus"
+                                                  className="btn btn-danger invalid-feedback"/>
+                                    <div role="group" aria-labelledby="my-category-group">
+                                        {transactionsStatus.map(transStatus =>
+                                            <div className="form-check" key={transStatus.id}>
+                                                <label className="form-check-label">
+                                                    <Field
+                                                        type="radio"
+                                                        className={`form-check-input ${errors.transStatus && touched.transStatus ? "is-invalid" : ""}`}
+                                                        name="transStatus"
+                                                        value={transStatus.id}
+                                                    />
+                                                    {transStatus.status}
+                                                </label>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
+                            }
                             <div className="mb-3">
                                 <div id="my-category-group">Банк отправитель</div>
                                 <ErrorMessage component="div" name="senderId"
@@ -359,7 +368,7 @@ function CreateTransactions({id}) {
                             <div className="mb-3">
                                 <label htmlFor="date" className="form-label">Дата транзакции</label>
                                 <Field
-                                    type="datetime-local"
+                                    type="date"
                                     className={`form-control ${errors.date && touched.date ? "is-invalid" : ""}`}
                                     id="date"
                                     name="date"
@@ -378,11 +387,7 @@ function CreateTransactions({id}) {
                                 />
                                 <ErrorMessage component="div" name="comment" className="invalid-feedback"/>
                             </div>
-                            {existsTransaction ?
-                                <button type="submit" className="btn btn-primary">Обновить транзакцию</button>
-                                :
-                                <button type="submit" className="btn btn-primary">Создать транзакцию</button>
-                            }
+                                <button type="submit" className="btn btn-primary">Отправить данные</button>
                         </FormikForm>
                     )}
                 </Formik>

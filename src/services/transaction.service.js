@@ -9,8 +9,10 @@ class TransactionService {
         return axios.get(API_URL, {headers: authHeader()});
     }
 
-    async searchTransaction(minAmount, maxAmount, startDate, endDate, category) {
+    async searchTransaction(senderId, recipientId, startDate, endDate, transStatus,
+                            recipientInn, minAmount, maxAmount, transType, category) {
         startDate = new Date(startDate).getTime();
+        console.log("Start date from search: ", startDate)
         endDate = new Date(endDate);
         endDate.setHours(23, 59, 59, 999);
         endDate = endDate.getTime();
@@ -20,10 +22,15 @@ class TransactionService {
             method: 'get',
             url: API_URL + "search",
             params: {
-                minAmount: minAmount,
-                maxAmount: maxAmount,
+                senderId: senderId,
+                recipientId: recipientId,
                 startDate: startDate,
                 endDate: endDate,
+                transStatus: transStatus,
+                recipientInn: recipientInn,
+                minAmount: minAmount,
+                maxAmount: maxAmount,
+                transType: transType,
                 category: category
             },
             headers: authHeader()

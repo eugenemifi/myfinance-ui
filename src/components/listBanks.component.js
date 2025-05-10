@@ -11,7 +11,8 @@ function ListBanks() {
     useEffect(() => {
         BanksService.getBanks()
             .then((response) => {
-                const data = response.data;
+                const data = response.data.content;
+                console.log(response.data)
                 setBanks(data);
             })
             .catch((error) => {
